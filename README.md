@@ -1,2 +1,17 @@
-# data-pipeline
-Repository to build an end to end automated pipeline
+# Glimpse
+
+
+Glimpse is a data engineering project designed to:
+- Read in latest news snippets from source API
+- Combined and process text, metadata into a single input
+- Call LLM API to generate a single paragraph prompt
+- Use prompt to feed into image generation API
+- Use social platform API to automatically generate content daily  
+
+## System Components
+
+
+
+## Project Architecture
+
+![Project Architecture](/docs/project_architecture.png)
