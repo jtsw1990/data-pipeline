@@ -1,7 +1,7 @@
-# data-pipeline
+# Glimpse
 
 
-TBD is a data engineering pipeline designed to:
+Glimpse is a data engineering project designed to:
 - Read in latest news snippets from source API
 - Combined and process text, metadata into a single input
 - Call LLM API to generate a single paragraph prompt
