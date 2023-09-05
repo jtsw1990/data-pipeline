@@ -1,15 +1,19 @@
-# Name TBC
+# Glimpse
 
----
+Glimpse is a data engineering project designed to:
+- Read in latest news snippets from source API
+- Combined and process text, metadata into a single input
+- Call LLM API to generate a single paragraph prompt
+- Use prompt to feed into image generation API
+- Use social platform API to automatically generate content daily  
 
-## Overview
+## System Components
 
-- Read in daily tweets
-- Wrangle and process text data into a prompt
-- Incorporate date into prompt
-- Use style transfer over some base layers of PFPs
-- Or use the prompt directly to generate art
-- Resulting "visualisation" will uniquely represent the day depending on tweets
+
+## Project Architecture
+
+![Project Architecture](/docs/project_architecture.png)
+
 
 ## Project Goals
 
@@ -24,10 +28,3 @@
 - Create a personal project template that can be reused
 - Add an element of content creation to this
 
-## Timeline & Milestones
-
-- Finalize idea
-- Finalize stack
-- Evaluate costs and feasibility (1)
-- Build basic infrastructure and data pipeline
-  ...
