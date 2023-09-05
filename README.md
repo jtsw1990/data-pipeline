@@ -15,6 +15,11 @@ Glimpse is a data engineering project designed to:
 ![Project Architecture](/docs/project_architecture.png)
 
 
+## Useful Links
+- [Currents API Documentation](https://currentsapi.services/en/docs/)
+- [AWS Console Login](https://ap-southeast-2.console.aws.amazon.com/console/home?region=ap-southeast-2#)
+- [DALL-E Dashboard](https://labs.openai.com/collections)
+
 ## Project Goals
 
 - Become a wizard in building infrastructure
