@@ -1,13 +1,8 @@
 name: Glimpse Data Ingestion Workflow
 
-#on:
-#  schedule:
-#    - cron: "0 8 * * *"
-
 on:
-  push:
-    branches:
-      - 9-build-ingestion-pipeline-into-landing-zone
+  schedule:
+    - cron: "0 8 * * *"
 
 jobs:
   build:
