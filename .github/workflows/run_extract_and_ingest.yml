@@ -1,16 +1,41 @@
 name: Glimpse Data Ingestion Workflow
 
+#on:
+#  schedule:
+#    - cron: "0 8 * * *"
+
 on:
-  schedule:
-    - cron: "0 8 * * *"
+  push:
+    branches:
+      - 9-build-ingestion-pipeline-into-landing-zone
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python 3.11.4
+        uses: actions/setup-python@v4
         with:
           python-version: '3.11.4'
-      - run: python -m pip install --upgrade pip
+
+      - name: Upgrade pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install project dependencies
+        run: python -m pip install -r requirements.txt
+
+      - name: Extract and load data
+        env:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          currents_api_key: ${{ secrets.CURRENTS_API_KEY }}
+        run: python extract_and_ingest.py
+
+
+
+
