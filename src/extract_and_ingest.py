@@ -1,3 +1,5 @@
+'''Main script to extract and load feed into S3.'''
+
 import os
 from dotenv import load_dotenv
 from extract_feed import extract_news_feed
