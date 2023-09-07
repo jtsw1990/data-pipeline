@@ -2,3 +2,5 @@ ruff==0.0.287
 python-dotenv==1.0.0
 currentsapi==0.0.2
 boto3==1.15.8
+pandas==2.0.3
+openai==0.28.0
