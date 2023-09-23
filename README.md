@@ -14,6 +14,10 @@ Glimpse is a data engineering project designed to:
 
 ![Project Architecture](/docs/project_architecture.png)
 
+Components that are IaC:
+- SNS topic set up
+- SNS subcription add
+- Pandas lambda layer
 
 ## Useful Links
 - [Currents API Documentation](https://currentsapi.services/en/docs/)
