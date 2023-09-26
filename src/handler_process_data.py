@@ -42,6 +42,8 @@ def process_data(event, context) -> None:
             lambda x: x['split_length'].index(x['longest_section_len']), axis=1)
         result['selected_section'] = result.apply(
             lambda x: x['split'][x['longest_section_idx']].strip(), axis=1)
+        result['selected_section'] = result['selected_section'].apply(
+            lambda x: x.replace("'", ''))
         result['title_token_count_adj'] = result['selected_section'].apply(
             lambda x: len(x.split(' ')))
 
