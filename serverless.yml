@@ -1,0 +1,36 @@
+org: jtsw1990
+app: glimpse-lambda-process-data
+service: lambda
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: ap-southeast-2
+  iamRoleStatements:
+    - Effect: 'Allow'
+      Action:
+        - 'lambda:InvokeFunction'
+        - 'lambda:InvokeAsync'
+      Resource: '*'
+
+package:
+  individually: true
+  exclude:
+    - ".*/**"
+
+functions:
+  process_data:
+    handler: src.handler_process_data.process_data
+    events:
+      - s3:
+          bucket: glimpse-landing-dev
+          event: s3:ObjectCreated:*
+          existing: true
+  generate_image:
+    handler: src.handler_image_gen.generate_image
+  store_image:
+    handler: src.handler_content_create.create_content
+  create_content:
+    handler: src.handler_response_store.store_response
