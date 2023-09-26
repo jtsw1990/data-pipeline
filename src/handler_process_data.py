@@ -49,7 +49,10 @@ def process_data(event, context) -> None:
 
         sns = boto3.client('sns')
         topic_arn = 'arn:aws:sns:ap-southeast-2:906384561362:glimpse-process-data-sns'
-        sns.publish(TopicArn=topic_arn, Message=result['selected_section'][0])
+
+        message = {'content': result['selected_section'][0]}
+
+        sns.publish(TopicArn=topic_arn, Message=message)
 
         print('Msg published to glimpse-process-data-sns')
 
