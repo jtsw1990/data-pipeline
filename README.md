@@ -15,11 +15,11 @@ Glimpse is a data engineering project designed to:
 ![Project Architecture](/docs/project_architecture.png)
 
 Components that are not IaC:
+- Updating of AWS credentials/IAM user
 - SNS topic set up
 - SNS subcription add
 - Pandas lambda layer
 - Creation of environment variables for content create lambda
-- Updating of AWS credentials
 - Posting of content
 
 ## Useful Links
