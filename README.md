@@ -19,6 +19,7 @@ Components that are not IaC:
 - SNS subcription add
 - Pandas lambda layer
 - Creation of environment variables for content create lambda
+- Updating of AWS credentials
 - Posting of content
 
 ## Useful Links
