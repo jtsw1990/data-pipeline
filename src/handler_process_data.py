@@ -1,15 +1,18 @@
 '''AWS Lambda processes raw JSON file. '''
-
+# %%
 from datetime import datetime as dt
 
 import pandas as pd
 import json
 import urllib.parse
 import boto3
+import datetime
 
 
 def process_data(event, context) -> dict:
     '''Lambda function reads in latest JSON data and processes fields.'''
+
+    datestamp = datetime.date.today()
 
     s3 = boto3.client('s3')
     bucket = event['Records'][0]['s3']['bucket']['name']
@@ -24,6 +27,7 @@ def process_data(event, context) -> dict:
         result = result.replace(r'\n', '', regex=True).replace(
             r'\t', '', regex=True)
         result['category'] = result['category'].apply(lambda x: ', '.join(x))
+
         # Clean and extract features from title
         result['title_token_count_raw'] = result['title'].apply(
             lambda x: len(x.split(' ')))
@@ -46,13 +50,18 @@ def process_data(event, context) -> dict:
         random_selection = result.sample(n=1).reset_index(drop=True)
         result_json = random_selection.to_dict(orient='records')[0]
 
+        # Store features in bucket
+        s3.put_object(
+            Bucket='glimpse-feature-store',
+            Key=f'feature_{datestamp}.json',
+            Body=bytes(json.dumps(result_json).encode('UTF-8'))
+        )
+
         print('process_data function invoked!')
 
         sns = boto3.client('sns')
         topic_arn = 'arn:aws:sns:ap-southeast-2:906384561362:glimpse-process-data-sns'
-
-        sns.publish(TopicArn=topic_arn, Message='process_data invoked')
-
+        sns.publish(TopicArn=topic_arn, Message=f'{datestamp}')
         print('Msg published to glimpse-process-data-sns')
 
         return result_json
