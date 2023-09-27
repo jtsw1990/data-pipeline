@@ -24,13 +24,6 @@ def process_data(event, context) -> dict:
         result = result.replace(r'\n', '', regex=True).replace(
             r'\t', '', regex=True)
         result['category'] = result['category'].apply(lambda x: ', '.join(x))
-        # Exract time & date features
-        date_format = '%Y-%m-%d %H:%M:%S %z'
-        result['publish_ts'] = result['published'].apply(
-            lambda x: dt.strptime(x, date_format))
-        result['publish_date'] = result['publish_ts'].apply(lambda x: x.date())
-        result['publish_time'] = result['publish_ts'].apply(lambda x: x.time())
-
         # Clean and extract features from title
         result['title_token_count_raw'] = result['title'].apply(
             lambda x: len(x.split(' ')))
@@ -47,6 +40,9 @@ def process_data(event, context) -> dict:
         result['title_token_count_adj'] = result['selected_section'].apply(
             lambda x: len(x.split(' ')))
 
+        result = result[
+            ['id', 'title', 'published', 'category', 'selected_section']
+        ]
         random_selection = result.sample(n=1).reset_index(drop=True)
         result_json = random_selection.to_dict(orient='records')[0]
 
@@ -66,3 +62,5 @@ def process_data(event, context) -> dict:
         print(
             'Error getting object {} from bucket {}.'.format(key, bucket))
         raise e
+
+# %%
