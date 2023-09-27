@@ -1,3 +1,5 @@
+'''AWS Lambda processes raw JSON file. '''
+
 from datetime import datetime as dt
 
 import pandas as pd
@@ -6,7 +8,7 @@ import urllib.parse
 import boto3
 
 
-def process_data(event, context) -> None:
+def process_data(event, context) -> dict:
     '''Lambda function reads in latest JSON data and processes fields.'''
 
     s3 = boto3.client('s3')
@@ -42,23 +44,22 @@ def process_data(event, context) -> None:
             lambda x: x['split_length'].index(x['longest_section_len']), axis=1)
         result['selected_section'] = result.apply(
             lambda x: x['split'][x['longest_section_idx']].strip(), axis=1)
-        result['selected_section'] = result['selected_section'].apply(
-            lambda x: x.replace("'", ''))
         result['title_token_count_adj'] = result['selected_section'].apply(
             lambda x: len(x.split(' ')))
+
+        random_selection = result.sample(n=1).reset_index(drop=True)
+        result_json = random_selection.to_dict(orient='records')[0]
 
         print('process_data function invoked!')
 
         sns = boto3.client('sns')
         topic_arn = 'arn:aws:sns:ap-southeast-2:906384561362:glimpse-process-data-sns'
 
-        message = {'content': result['selected_section'][0]}
-
-        sns.publish(TopicArn=topic_arn, Message=message)
+        sns.publish(TopicArn=topic_arn, Message='process_data invoked')
 
         print('Msg published to glimpse-process-data-sns')
 
-        return None
+        return result_json
 
     except Exception as e:
         print(e)
