@@ -9,7 +9,7 @@ import boto3
 import datetime
 
 
-def process_data(event, context) -> dict:
+def process_data(event, context) -> None:
     '''Lambda function reads in latest JSON data and processes fields.'''
 
     datestamp = datetime.date.today()
@@ -49,6 +49,8 @@ def process_data(event, context) -> dict:
         ]
         random_selection = result.sample(n=1).reset_index(drop=True)
         result_json = random_selection.to_dict(orient='records')[0]
+        result_json['img_prompt'] = ''
+        result_json['img_url'] = ''
 
         # Store features in bucket
         s3.put_object(

@@ -32,5 +32,3 @@ functions:
     handler: src.handler_image_gen.generate_image
   create_content:
     handler: src.handler_content_create.create_content
-  store_image:
-    handler: src.handler_response_store.store_response
