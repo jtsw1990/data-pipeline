@@ -52,10 +52,11 @@ def process_data(event, context) -> None:
         result_json['img_prompt'] = ''
         result_json['img_url'] = ''
 
+        destination_key = key.replace('currents_raw', 'feature')
         # Store features in bucket
         s3.put_object(
             Bucket='glimpse-feature-store',
-            Key=f'feature_{datestamp}.json',
+            Key=destination_key,
             Body=bytes(json.dumps(result_json).encode('UTF-8'))
         )
 
