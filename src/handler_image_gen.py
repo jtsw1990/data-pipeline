@@ -1,4 +1,5 @@
 '''Script to interact with DALL-E API.'''
+# %%
 import boto3
 import datetime
 import json
@@ -14,15 +15,14 @@ def generate_image(event, context) -> None:
     message = event['Records'][0]['Sns']['Message']
     print(f'Received SNS message: {message}')
 
-    datestamp = datetime.date.today()
-    feature_json_name = f'feature_{datestamp}.json'
+    feature_json_name = f'feature_{message}.json'
 
     s3 = boto3.client('s3')
     response = s3.get_object(
         Bucket='glimpse-feature-store', Key=feature_json_name
     )
     features = response['Body'].read().decode('utf-8')
-
+    features = eval(features)
     # simulates gpt3.5 prompt results
     features['img_prompt'] = r'placeholder_prompt'
 
@@ -44,3 +44,5 @@ def generate_image(event, context) -> None:
     print('Msg published to glimpse-img-gen-sns')
 
     return None
+
+# %%

@@ -1,4 +1,4 @@
-'''Function to create content automatically.'''
+'''Function to send content to email automatically.'''
 
 import smtplib
 import ssl
@@ -17,8 +17,7 @@ def create_content(event, context) -> None:
 
     s3 = boto3.client('s3')
 
-    datestamp = datetime.date.today()
-    feature_json_name = f'feature_{datestamp}.json'
+    feature_json_name = f'feature_{message}.json'
 
     response = s3.get_object(
         Bucket='glimpse-feature-store', Key=feature_json_name
