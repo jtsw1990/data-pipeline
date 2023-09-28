@@ -1,18 +1,14 @@
 '''AWS Lambda processes raw JSON file. '''
-# %%
-from datetime import datetime as dt
 
 import pandas as pd
 import json
 import urllib.parse
 import boto3
-import datetime
+import re
 
 
 def process_data(event, context) -> None:
     '''Lambda function reads in latest JSON data and processes fields.'''
-
-    datestamp = datetime.date.today()
 
     s3 = boto3.client('s3')
     bucket = event['Records'][0]['s3']['bucket']['name']
@@ -53,6 +49,8 @@ def process_data(event, context) -> None:
         result_json['img_url'] = ''
 
         destination_key = key.replace('currents_raw', 'feature')
+        message = re.search("([0-9]{4}\-[0-9]{2}\-[0-9]{2})", key)[0]
+
         # Store features in bucket
         s3.put_object(
             Bucket='glimpse-feature-store',
@@ -64,7 +62,7 @@ def process_data(event, context) -> None:
 
         sns = boto3.client('sns')
         topic_arn = 'arn:aws:sns:ap-southeast-2:906384561362:glimpse-process-data-sns'
-        sns.publish(TopicArn=topic_arn, Message=f'{datestamp}')
+        sns.publish(TopicArn=topic_arn, Message=message)
         print('Msg published to glimpse-process-data-sns')
 
         return result_json
@@ -74,5 +72,3 @@ def process_data(event, context) -> None:
         print(
             'Error getting object {} from bucket {}.'.format(key, bucket))
         raise e
-
-# %%

@@ -1,7 +1,6 @@
 '''Script to interact with DALL-E API.'''
 # %%
 import boto3
-import datetime
 import json
 
 
@@ -39,7 +38,7 @@ def generate_image(event, context) -> None:
 
     sns = boto3.client('sns')
     topic_arn = 'arn:aws:sns:ap-southeast-2:906384561362:glimpse-img-gen-sns'
-    sns.publish(TopicArn=topic_arn, Message='handler_image_gen function')
+    sns.publish(TopicArn=topic_arn, Message=message)
 
     print('Msg published to glimpse-img-gen-sns')
 
