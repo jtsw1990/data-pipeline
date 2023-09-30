@@ -1,5 +1,5 @@
 '''AWS Lambda processes raw JSON file. '''
-
+# %%
 import pandas as pd
 import json
 import urllib.parse
@@ -21,7 +21,7 @@ def process_data(event, context) -> None:
 
         result = pd.DataFrame(json_content['news'])
         result = result.replace(r'\n', '', regex=True).replace(
-            r'\t', '', regex=True).replace(r'\u', '', regex=True)
+            r'\t', '', regex=True).replace(r'\\u', '', regex=True)
         result['category'] = result['category'].apply(lambda x: ', '.join(x))
 
         # Clean and extract features from title
@@ -72,3 +72,5 @@ def process_data(event, context) -> None:
         print(
             'Error getting object {} from bucket {}.'.format(key, bucket))
         raise e
+
+# %%
