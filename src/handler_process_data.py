@@ -21,7 +21,7 @@ def process_data(event, context) -> None:
 
         result = pd.DataFrame(json_content['news'])
         result = result.replace(r'\n', '', regex=True).replace(
-            r'\t', '', regex=True)
+            r'\t', '', regex=True).replace(r'\u', '', regex=True)
         result['category'] = result['category'].apply(lambda x: ', '.join(x))
 
         # Clean and extract features from title
