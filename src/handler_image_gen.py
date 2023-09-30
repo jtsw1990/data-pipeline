@@ -25,6 +25,8 @@ def generate_image(event, context) -> None:
     features = response['Body'].read().decode('utf-8')
     features = eval(features)
 
+    initial_prompt = features['selected_section']
+
     # GPT prompt
     openai.api_key = os.environ['openai_key']
 
@@ -58,7 +60,7 @@ def generate_image(event, context) -> None:
             },
             {
                 'role': 'user',
-                'content': 'Do the same for the sentence ```Naomi Osaka announces return to professional tennis in 2024```'
+                'content': f'Do the same for the sentence ```{initial_prompt}```'
             }
         ]
     )
