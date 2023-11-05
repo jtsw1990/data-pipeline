@@ -29,13 +29,14 @@ def create_content(event, context) -> None:
 
     img_url = content_json['img_url']
     title = content_json['title']
+    subject = f'Glimpse content feed: {message}'
 
     sender_email = os.environ['email_add']
     receiver_email = os.environ['email_add']
     password = os.environ['email_pw']
 
     message = MIMEMultipart("alternative")
-    message["Subject"] = f'Glimpse content feed: {message}'
+    message["Subject"] = subject
     message["From"] = sender_email
     message["To"] = receiver_email
 
