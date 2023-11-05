@@ -42,7 +42,7 @@ def create_content(event, context) -> None:
     message = MIMEMultipart("alternative")
     message["From"] = user_email
     message["To"] = user_email
-    message["Subject"] = f'Glimpse content feed: {message}'
+    message["Subject"] = 'Glimpse content feed'
 
     text = f"""\
     Post: {title}
