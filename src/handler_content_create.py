@@ -60,7 +60,7 @@ def create_content(event, context) -> None:
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
-    image = MIMEImage(img_bytes, name=f"{message}.jpg")
+    image = MIMEImage(img_bytes, name="generated_image.jpg")
 
     # Add HTML/plain-text parts to MIMEMultipart message
     # The email client will try to render the last part first
