@@ -31,6 +31,8 @@ def create_content(event, context) -> None:
 
     img_url = content_json['img_url']
     title = content_json['title']
+    selected_section = content_json['selected_section']
+    img_prompt = content_json['img_prompt']
     img_byte_str = content_json['img_byte_str']
 
     # Decode the base64-encoded image data from the dictionary
@@ -45,12 +47,17 @@ def create_content(event, context) -> None:
     msg["Subject"] = f'Glimpse Feed:{message}'
 
     text = f"""\
-    Post: {title}
-    {img_url}"""
+    Original Title: {title}
+    {selected_section}
+    {img_prompt}
+    {img_url}
+    """
     html = f"""\
     <html>
     <body>
-        <p>Post:{title}<br>
+        <p>Original Title: {title}<br>
+        <p>Selected Section: {selected_section}<br>
+        <p>Image Prompt: {img_prompt}<br>
         <a href={img_url}>Image</a>
         </p>
     </body>
