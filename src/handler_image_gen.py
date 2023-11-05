@@ -1,9 +1,11 @@
 '''Script to interact with DALL-E API.'''
-
+# %%
 import boto3
 import json
 import openai
 import os
+import requests
+import base64
 
 
 def generate_image(event, context) -> None:
@@ -39,9 +41,9 @@ def generate_image(event, context) -> None:
     - Add in "A street photo of" to the start of the response
     - Add in "shot by a Leica." at the back of the response
     ```Bangladesh's worst ever dengue outbreak a 'canary in the coal mine' for climate crisis, WHO expert warns```
-    '''
+    '''  # noqa: E501
 
-    response_template = '''A street photo of a concerned middle-aged Asian woman, her brows furrowed, emphasizing climate impact, shot by a Leica.'''
+    response_template = '''A street photo of a concerned middle-aged Asian woman, her brows furrowed, emphasizing climate impact, shot by a Leica.'''  # noqa: E501
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -77,14 +79,18 @@ def generate_image(event, context) -> None:
     )
 
     img_url = response["data"][0]["url"]
+    img_bytes = requests.get(img_url).content
+
+    img_byte_str = base64.b64encode(img_bytes).decode('utf-8')
 
     features['img_url'] = img_url
+    features['img_byte_str'] = img_byte_str
 
     # score JSON file with model results
     s3.put_object(
         Bucket='glimpse-feature-store',
         Key=feature_json_name,
-        Body=bytes(json.dumps(features).encode('UTF-8'))
+        Body=json.dumps(features)
     )
     print('generate_image invoked')
 
@@ -95,3 +101,5 @@ def generate_image(event, context) -> None:
     print('Msg published to glimpse-img-gen-sns')
 
     return None
+
+# %%

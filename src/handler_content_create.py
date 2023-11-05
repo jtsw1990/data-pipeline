@@ -4,8 +4,10 @@ import smtplib
 import ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from email.mime.image import MIMEImage
 import os
 import boto3
+import base64
 
 
 def create_content(event, context) -> None:
@@ -29,15 +31,18 @@ def create_content(event, context) -> None:
 
     img_url = content_json['img_url']
     title = content_json['title']
+    img_byte_str = content_json['img_byte_str']
 
-    sender_email = os.environ['email_add']
-    receiver_email = os.environ['email_add']
+    # Decode the base64-encoded image data from the dictionary
+    img_bytes = base64.b64decode(img_byte_str.encode('utf-8'))
+
+    user_email = os.environ['email_add']
     password = os.environ['email_pw']
 
-    message = MIMEMultipart("alternative")
-    message["Subject"] = f'Glimpse content feed: {message}'
-    message["From"] = sender_email
-    message["To"] = receiver_email
+    msg = MIMEMultipart("alternative")
+    msg["From"] = user_email
+    msg["To"] = user_email
+    msg["Subject"] = f'Glimpse Feed:{message}'
 
     text = f"""\
     Post: {title}
@@ -45,7 +50,7 @@ def create_content(event, context) -> None:
     html = f"""\
     <html>
     <body>
-        <p>Post: {title}<br>
+        <p>Post:{title}<br>
         <a href={img_url}>Image</a>
         </p>
     </body>
@@ -55,17 +60,19 @@ def create_content(event, context) -> None:
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
+    image = MIMEImage(img_bytes, name=f"image_{message}.jpg")
 
     # Add HTML/plain-text parts to MIMEMultipart message
     # The email client will try to render the last part first
-    message.attach(part1)
-    message.attach(part2)
+    msg.attach(part1)
+    msg.attach(part2)
+    msg.attach(image)
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
-        server.login(sender_email, password)
+        server.login(user_email, password)
         server.sendmail(
-            sender_email, receiver_email, message.as_string()
+            user_email, user_email, msg.as_string()
         )
     print('create_content function invoked')
 
