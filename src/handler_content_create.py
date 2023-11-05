@@ -36,15 +36,13 @@ def create_content(event, context) -> None:
     # Decode the base64-encoded image data from the dictionary
     img_bytes = base64.b64decode(img_byte_str.encode('utf-8'))
 
-    subject = f'Glimpse content feed: {message}'
-
     user_email = os.environ['email_add']
     password = os.environ['email_pw']
 
     message = MIMEMultipart("alternative")
     message["From"] = user_email
     message["To"] = user_email
-    message["Subject"] = subject
+    message["Subject"] = f'Glimpse content feed: {message}'
 
     text = f"""\
     Post: {title}
