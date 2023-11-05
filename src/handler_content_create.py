@@ -39,10 +39,10 @@ def create_content(event, context) -> None:
     user_email = os.environ['email_add']
     password = os.environ['email_pw']
 
-    message = MIMEMultipart("alternative")
-    message["From"] = user_email
-    message["To"] = user_email
-    message["Subject"] = 'Glimpse content feed'
+    msg = MIMEMultipart("alternative")
+    msg["From"] = user_email
+    msg["To"] = user_email
+    msg["Subject"] = f'Glimpse Feed:{message}'
 
     text = f"""\
     Post: {title}
@@ -50,7 +50,7 @@ def create_content(event, context) -> None:
     html = f"""\
     <html>
     <body>
-        <p>Post: {title}<br>
+        <p>Post:{title}<br>
         <a href={img_url}>Image</a>
         </p>
     </body>
@@ -60,19 +60,19 @@ def create_content(event, context) -> None:
     # Turn these into plain/html MIMEText objects
     part1 = MIMEText(text, "plain")
     part2 = MIMEText(html, "html")
-    image = MIMEImage(img_bytes, name="generated_image.jpg")
+    image = MIMEImage(img_bytes, name=f"image_{message}.jpg")
 
     # Add HTML/plain-text parts to MIMEMultipart message
     # The email client will try to render the last part first
-    message.attach(part1)
-    message.attach(part2)
-    message.attach(image)
+    msg.attach(part1)
+    msg.attach(part2)
+    msg.attach(image)
 
     context = ssl.create_default_context()
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
         server.login(user_email, password)
         server.sendmail(
-            user_email, user_email, message.as_string()
+            user_email, user_email, msg.as_string()
         )
     print('create_content function invoked')
 
