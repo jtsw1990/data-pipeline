@@ -9,11 +9,11 @@ Glimpse is a data engineering project designed to:
 
 ## System Components
 
-External APIs
+#### External APIs
 - [Currents API](https://currentsapi.services/en)
 - [Openai](https://openai.com/blog/openai-api)
 
-AWS Ecosystem
+#### AWS Ecosystem
 - [Serverless](https://app.serverless.com/)
 - [IAM](https://us-east-1.console.aws.amazon.com/iam/home?region=ap-southeast-2#)
 - [S3](https://s3.console.aws.amazon.com/s3/buckets?region=ap-southeast-2&region=ap-southeast-2)
@@ -21,19 +21,20 @@ AWS Ecosystem
 - [SNS](https://ap-southeast-2.console.aws.amazon.com/sns/v3/home?region=ap-southeast-2#/)
 - [CloudWatch](https://ap-southeast-2.console.aws.amazon.com/cloudwatch/home?region=ap-southeast-2#home:)
 
-Social Media
-- [Instagram](#)
+#### Social Media
+- [Project Email](mailto:glimpse.feed@gmail.com)
+- [Project Instagram](https://www.instagram.com/glimpse.feed/)
 
 ## Project Architecture
 
 ![Project Architecture](/docs/glimpse-architecture-diagram-v3.png)
 
 
-Components that are not IaC:
+Components that are **not** IaC:
 - Updating of AWS credentials/IAM user
 - SNS topic set up + subscriptions
 - Pandas lambda layer
-- OpenAI lambda layer (TBC)
+- OpenAI lambda layer
 - Creation of environment variables for content create lambda
 - Posting of content
 
@@ -41,6 +42,17 @@ Components that are not IaC:
 - [Currents API Documentation](https://currentsapi.services/en/docs/)
 - [AWS Console Login](https://ap-southeast-2.console.aws.amazon.com/console/home?region=ap-southeast-2#)
 - [DALL-E Dashboard](https://labs.openai.com/collections)
+
+
+## Development Workflow
+- Create and branch off new issue
+- Install all local dependencies in `requirements.txt` as well as setting up `serverless` locally
+- Use `#%%` magic from vscode jupyter extension to run isolated lambda functions
+- Replicate variables locally using sample files
+- Run `ruff check . --fix` to highlight any linting issues
+- Run `sls deploy` to push latest adjustments to AWS (Note the components not included in IAC above and apply accordingly)
+- Run git workflow to push to feature branch
+- Merge back into main
 
 ## Project Goals
 
