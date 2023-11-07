@@ -9,11 +9,11 @@ import base64
 
 
 def generate_image(event, context) -> None:
-    '''Uses a placeholder string.
+    '''Score feature JSON object with 3 properties.
 
-    Assumes that some JSON response is returned with 
-    a link to where the image is hosted.
-    )
+    - img_prompt
+    - img_url
+    - img_data
     '''
     message = event['Records'][0]['Sns']['Message']
     print(f'Received SNS message: {message}')
@@ -33,24 +33,18 @@ def generate_image(event, context) -> None:
     openai.api_key = os.environ['openai_key']
 
     prompt_template = '''
-    Can you adjust the following sentence surrounded by ``` with the following:
-    - Adjust the sentence into one describing a person or a scene in less than 25 words
-    - Replace any names with a description of their age, gender and ethnicity
-    - Replace any political agendas to something more ambiguous
-    - Be as descriptive as possible about the subject so that DALL-E can comprehend
-    - Add in "A street photo of" to the start of the response
-    - Add in "shot by a Leica." at the back of the response
-    ```Bangladesh's worst ever dengue outbreak a 'canary in the coal mine' for climate crisis, WHO expert warns```
+    Use the one main object or topic in the following news snippet and generate a creative DALL-E prompt using a 3d style in less than 30 words:
+    Bangladesh's worst ever dengue outbreak a 'canary in the coal mine' for climate crisis, WHO expert warns
     '''  # noqa: E501
 
-    response_template = '''A street photo of a concerned middle-aged Asian woman, her brows furrowed, emphasizing climate impact, shot by a Leica.'''  # noqa: E501
+    response_template = '''Produce a 3D artwork featuring the 'canary in the coal mine' symbolism for the climate crisis, with a spotlight on the dengue outbreak's significance.'''  # noqa: E501
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {
                 'role': 'system',
-                'content': 'You are a expert writer and prompt expert'
+                'content': 'You are a professional graphic designer'
             },
             {
                 'role': 'user',
@@ -62,7 +56,7 @@ def generate_image(event, context) -> None:
             },
             {
                 'role': 'user',
-                'content': f'Do the same for the sentence ```{initial_prompt}```'
+                'content': f'Generate another DALL-E prompt for the following snippet: ```{initial_prompt}```'  # noqa: E501
             }
         ]
     )
