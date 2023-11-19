@@ -39,11 +39,13 @@ def create_content(event, context) -> None:
     img_bytes = base64.b64decode(img_byte_str.encode('utf-8'))
 
     user_email = os.environ['email_add']
+    second_email = 'yieldingape@proton.me'
     password = os.environ['email_pw']
 
+    recipients = [user_email, second_email]
     msg = MIMEMultipart("alternative")
     msg["From"] = user_email
-    msg["To"] = user_email
+    msg["To"] = ", ".join(recipients)
     msg["Subject"] = f'Glimpse Feed:{message}'
 
     text = f"""\
@@ -79,7 +81,7 @@ def create_content(event, context) -> None:
     with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as server:
         server.login(user_email, password)
         server.sendmail(
-            user_email, user_email, msg.as_string()
+            user_email, recipients, msg.as_string()
         )
     print('create_content function invoked')
 
