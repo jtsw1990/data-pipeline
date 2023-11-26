@@ -12,6 +12,7 @@ Glimpse is a data engineering project designed to:
 #### External APIs
 - [Currents API](https://currentsapi.services/en)
 - [Openai](https://openai.com/blog/openai-api)
+- [LeonardoAI](https://app.leonardo.ai/)
 
 #### AWS Ecosystem
 - [Serverless](https://app.serverless.com/)
@@ -27,7 +28,7 @@ Glimpse is a data engineering project designed to:
 
 ## Project Architecture
 
-![Project Architecture](/docs/glimpse-architecture-diagram-v3.png)
+![Project Architecture](/docs/glimpse-architecture-diagram-v4.png)
 
 
 Components that are **not** IaC:
@@ -41,7 +42,8 @@ Components that are **not** IaC:
 ## Useful Links
 - [Currents API Documentation](https://currentsapi.services/en/docs/)
 - [AWS Console Login](https://ap-southeast-2.console.aws.amazon.com/console/home?region=ap-southeast-2#)
-- [DALL-E Dashboard](https://labs.openai.com/collections)
+- [DALL-E Dashboard](https://labs.openai.com/collections) Not in used anymore
+- [Leonardo.AI API Documentation](https://docs.leonardo.ai/reference/creategeneration)
 
 
 ## Development Workflow
