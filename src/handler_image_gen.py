@@ -35,23 +35,21 @@ def generate_image(event, context) -> None:
     leonardo_api_key = os.environ['leonardo_api_key']
 
     prompt_template = '''
-    Using the following snippet encased in ``, generate an image prompt of an imaginery human superhero or superheroine that is relevant to the snippet, be creating and detailed in the description of this character.
-    Also come up with a creative backstory in around 50 words on this hero's origin story and his/her main superpower, and include some elements of the original snippet in the backstory.
-    
-    `Faces of hope: The freed hostages of Gaza`
+    Using the following snippet encased in ```, generate an image prompt of an imaginery character  that is relevant to the snippet, be extravagent and detailed in the description of this character including the type of creature (if applicable) , race, age group, ethnicity and appearance. The character need not seem like someone that exists in the world currently.
+    Also come up with a creative backstory in around 50 words on this character's origin story and his/her/its main superpower, and include some elements of the original snippet in the backstory.
+
+    ```Bangladesh Arrest Thousands in 'Violent' Crackdown: HRW```
     '''  # noqa: E501
 
     response_template = '''
-    Imaginary Superhero: Lumina Salvator
-
     Description:
-    Lumina Salvator, draped in a radiant cloak, emanates a warm glow reflecting the faces of the freed hostages. Their eyes shine with compassion, symbolizing the transformative power of hope emerging from the shadows.
+    Oracle Lumineer, an ethereal being, appears as an ageless cosmic seer with radiant iridescent skin. Their eyes, gleaming with interstellar wisdom, reflect the struggles of oppressed souls. Adorned in celestial robes, they embody the resilience of hope in the face of darkness.
 
     Backstory:
-    Sarah Al-Hassan, a photojournalist, harnessed the energy of hope captured in her lens. Empowered, she became Lumina Salvator, using the light of captured moments to inspire healing and unity.
+    Originating from a cosmic realm, Oracle Lumineer descended to Earth as a response to cries for justice. Infused with the cosmic energy of empathy, they can traverse time and space, seeking out injustice to intervene and inspire change.
 
     Main Superpower:
-    Photonic Healing - Lumina Salvator can harness and project healing energy through captured images, bringing solace and empowerment to those who have endured trauma, embodying the resilience of the freed hostages in Gaza.
+    Cosmic Empathy - Oracle Lumineer possesses the ability to empathize with the collective suffering of oppressed individuals. Drawing on cosmic energies, they channel empathy to influence hearts and minds, fostering unity and inspiring resistance against systemic injustice.
     '''  # noqa: E501
 
     completion = openai.ChatCompletion.create(
