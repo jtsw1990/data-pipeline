@@ -76,7 +76,10 @@ def generate_image(event, context) -> None:
 
     image_prompt = completion.choices[0].message.content
 
-    features['img_prompt'] = image_prompt
+    prompt = image_prompt.replace('\n', '').split(
+        'Description:')[-1].split('Backstory:')[0]
+
+    features['img_prompt'] = prompt
 
     # Leonardo API
 
@@ -85,7 +88,7 @@ def generate_image(event, context) -> None:
     payload = {
         "height": 512,
         "modelId": "1e60896f-3c26-4296-8ecc-53e2afecc132",
-        "prompt": image_prompt,
+        "prompt": prompt,
         "width": 512,
         "alchemy": True,
         "highResolution": True,
