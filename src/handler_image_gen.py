@@ -35,22 +35,22 @@ def generate_image(event, context) -> None:
     leonardo_api_key = os.environ['leonardo_api_key']
 
     prompt_template = '''
-    Using the following snippet encased in ```, generate an image prompt of an imaginery character  that is relevant to the snippet, be extravagent and detailed in the description of this character including the type of creature (if applicable) , race, age group, ethnicity and appearance. The character need not seem like someone that exists in the world currently.
-    Also come up with a creative backstory in around 50 words on this character's origin story and his/her/its main superpower, and include some elements of the original snippet in the backstory.
+    Using the following snippet encased in ```, generate an image prompt of an imaginary character that is relevant to the snippet, be extravagent and detailed in the description of this character including the type of creature (if applicable), race, age group, ethnicity and appearance. Ensure that the overall character design aligns with the original snippet and a random action pose is included in the description.
 
-    ```Bangladesh Arrest Thousands in 'Violent' Crackdown: HRW```
+    Also come up with a creative backstory in around 50 words on this character's origin story and his/her/its main superpower, and include elements of the original snippet in the backstory.
+
+    ```Russia Extends Detention of US Journalist```
     '''  # noqa: E501
 
     response_template = '''
+    Imaginary Character: Lumis Shadowcloak, Guardian of Free Thought
+
     Description:
-    Oracle Lumineer, an ethereal being, appears as an ageless cosmic seer with radiant iridescent skin. Their eyes, gleaming with interstellar wisdom, reflect the struggles of oppressed souls. Adorned in celestial robes, they embody the resilience of hope in the face of darkness.
+    Lumis, an enigmatic ethereal being with flowing robes that morph into celestial constellations. Their eyes gleam with cosmic wisdom, reflecting the ages. Lumis stands defiant, one hand reaching for the stars, the other shielding the truth-seekers from the oppressive shadows.
 
     Backstory:
-    Originating from a cosmic realm, Oracle Lumineer descended to Earth as a response to cries for justice. Infused with the cosmic energy of empathy, they can traverse time and space, seeking out injustice to intervene and inspire change.
-
-    Main Superpower:
-    Cosmic Empathy - Oracle Lumineer possesses the ability to empathize with the collective suffering of oppressed individuals. Drawing on cosmic energies, they channel empathy to influence hearts and minds, fostering unity and inspiring resistance against systemic injustice.
-    '''  # noqa: E501
+    Lumis, born from the celestial whispers of suppressed voices, is the embodiment of free thought. Originating in the astral plane, they journey through dimensions to champion journalists. Their power, Celestial Ward, shields truth-seekers against oppressive forces.
+    '''
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -79,7 +79,12 @@ def generate_image(event, context) -> None:
     prompt = image_prompt.replace('\n', '').split(
         'Description:')[-1].split('Backstory:')[0]
 
-    features['img_prompt'] = prompt
+    post_text = image_prompt.replace('\n', '').split('Backstory:')[-1]
+    p1 = post_text.split('Main Superpower:')[0]
+    p2 = post_text.split('Main Superpower:')[-1].split(' - ')[-1]
+    final_text = p1 + ' ' + p2
+
+    features['img_prompt'] = final_text
 
     # Leonardo API
 
