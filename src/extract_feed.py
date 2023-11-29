@@ -13,7 +13,11 @@ def extract_news_feed(api_key: str) -> dict:
 
     api = CurrentsAPI(api_key=api_key)
 
-    return api.latest_news()
+    return api.search(
+        country="",
+        language="en",
+        category="world"
+    )
 
 
 if __name__ == '__main__':
