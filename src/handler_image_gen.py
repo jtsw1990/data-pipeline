@@ -35,21 +35,21 @@ def generate_image(event, context) -> None:
     leonardo_api_key = os.environ['leonardo_api_key']
 
     prompt_template = '''
-    Using the following snippet encased in ```, generate an image prompt of an imaginary character that is relevant to the snippet, be extravagent and detailed in the description of this character including the type of creature (if applicable), race, age group, ethnicity and appearance. Ensure that the overall character design aligns with the original snippet and a random action pose is included in the description.
+    Using the following snippet encased in ```, generate an image prompt of a robot that is inspired by a mix of Transformers, Gundam and Samurai armour, and is relevant to the snippet. The robot must take the shape of a random animal. Be detailed in the description of this robot. Ensure that the design and mechanism of it's body is very intricate, using a suitable 3 colour palette that includes black as a base with accents of the other 2 colours.
 
-    Also come up with a creative backstory in around 50 words on this character's origin story and his/her/its main superpower, and include elements of the original snippet in the backstory.
+    Also come up with a creative backstory in around 50 words on this robot's origin story, and include elements of the original snippet in the backstory.
 
-    ```Russia Extends Detention of US Journalist```
+    ```Sri Lanka Suffers Brief Power Outage After Main Transmission Line Fails```
     '''  # noqa: E501
 
     response_template = '''
-    Imaginary Character: Lumis Shadowcloak, Guardian of Free Thought
+    Design Description:
+    Introducing "EnergiPanther," a robotic marvel blending Transformers, Gundam, and Samurai aesthetics. This sleek mechanized panther stands at 25 feet, adorned in intricate black armor with accents of deep crimson and electric gold. The samurai-inspired patterns on its chassis exude elegance, and its articulated limbs display a fusion of strength and precision.
 
-    Description:
-    Lumis, an enigmatic ethereal being with flowing robes that morph into celestial constellations. Their eyes gleam with cosmic wisdom, reflecting the ages. Lumis stands defiant, one hand reaching for the stars, the other shielding the truth-seekers from the oppressive shadows.
+    In a majestic pose, EnergiPanther prowls, its golden eyes gleaming with determination. The crimson energy pulsating through its tail signifies the power coursing through its cybernetic veins.
 
     Backstory:
-    Lumis, born from the celestial whispers of suppressed voices, is the embodiment of free thought. Originating in the astral plane, they journey through dimensions to champion journalists. Their power, Celestial Ward, shields truth-seekers against oppressive forces.
+    Forged by visionary Sri Lankan engineers post a crucial power outage, EnergiPanther embodies the nation's spirit. The main transmission line failure spurred its creation, fusing traditional samurai ethos with cutting-edge robotics. EnergiPanther now stands as a guardian, symbolizing Sri Lanka's commitment to overcoming challenges and ensuring an uninterrupted power supply.
     '''
 
     completion = openai.ChatCompletion.create(
@@ -76,13 +76,12 @@ def generate_image(event, context) -> None:
 
     image_prompt = completion.choices[0].message.content
 
-    prompt = image_prompt.replace('\n', '').split(
-        'Description:')[-1].split('Backstory:')[0]
-
-    post_text = image_prompt.replace('\n', '').split('Backstory:')[-1]
-    p1 = post_text.split('Main Superpower:')[0]
-    p2 = post_text.split('Main Superpower:')[-1].split(' - ')[-1]
-    final_text = p1 + ' ' + p2
+    prompt = (
+        image_prompt.replace('\n', '')
+        .split('Design Description:')[-1]
+        .split('Backstory:')[0]
+    )
+    final_text = image_prompt.replace('\n', '').split('Backstory:')[-1]
 
     features['img_prompt'] = final_text
 
